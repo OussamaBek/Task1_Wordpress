@@ -1,0 +1,57 @@
+version: '3'
+services:
+  #Database
+  db:
+    image: mysql:5.7
+    volumes: 
+      - db_data:/var/lib/mysql
+    restart: always
+    environment: 
+      MYSQL_TCP_PORT: 13900
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: oussama
+      MYSQL_PASSWORD: admin
+    networks:
+      - wpsite
+  #phpmyadmin
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: db:13900
+      MYSQL_ROOT_PASSWORD: admin
+    networks:
+      - wpsite
+  #WORDPRESS
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    ports:
+      - 9999:80
+    restart: always
+    volumes: ['./:/var/www/html']
+    environment:
+      WORDPRESS_DB_HOST: db:13900
+      WORDPRESS_DB_USER: oussama
+      WORDPRESS_DB_PASSWORD: admin
+    networks:
+      - wpsite
+  #CLI    
+  cli:
+    image: wordpress:cli
+    #Theme and plugin mapped localy
+    volumes:
+      - ./site:/var/www/html/
+      - ./plugins:/var/www/html/wp-content/plugins
+      - ./themes:/var/www/html/wp-content/themes
+      
+networks:
+  wpsite:
+volumes:
+  db_data:
