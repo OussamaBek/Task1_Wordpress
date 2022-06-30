@@ -13,10 +13,7 @@ if(!defined('ABSPATH')){
 }
 //Class Words
 require __DIR__ . '/includes/Words.php';
-if (  defined( 'WP_CLI' ) && WP_CLI ) {
-  // Do WP-CLI specific things.
-  echo 'YES';
-}
+
 
 // include files via shortcode
 function random_words() {
