@@ -46,7 +46,7 @@ services:
     networks:
       - wpsite
   #CLI    
-  cli:
+  WP-CLI:
     depends_on:
       - db
       - wordpress
@@ -61,7 +61,10 @@ services:
       - ./site:/var/www/html/
       - ./plugins:/var/www/html/wp-content/plugins
       - ./themes:/var/www/html/wp-content/themes
-      
+    environment:
+      WORDPRESS_DB_HOST: db:13900
+      WORDPRESS_DB_USER: oussama
+      WORDPRESS_DB_PASSWORD: admin 
 networks:
   wpsite:
 volumes:
