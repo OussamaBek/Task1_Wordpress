@@ -1,11 +1,12 @@
 <?php
-/**
- * @wordpress-plugin
- * Plugin word: Word Second
- * Description: Show a word depends of a second is even or no.
- * Version:     1.0.0
- * Author:      O.B
- */
+
+/*
+
+Plugin Name: Word Second
+Description: Show a word depends of a second is even or no.
+Author: O.B
+*/
+
 //Exit if Access by Path
 if(!defined('ABSPATH')){
   exit;
@@ -31,6 +32,9 @@ $pronunciation=explode(" \"pronunciation\": \"", $data)[1];
 $pronunciation=explode("\"", $pronunciation)[0];
 //create object
   $words[$x] = new Word($word, $definition,$pronunciation);
+}
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+  echo 'Yes';
 }
 //Script
 $content='  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">

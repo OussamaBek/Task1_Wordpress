@@ -31,11 +31,14 @@ services:
   wordpress:
     depends_on:
       - db
-    image: wordpress:latest
+    image: wordpress:5.9.3
     ports:
       - 9999:80
     restart: always
-    volumes: ['./:/var/www/html']
+    volumes: 
+          - ./site:/var/www/html/
+          - ./plugins:/var/www/html/wp-content/plugins
+          - ./themes:/var/www/html/wp-content/themes
     environment:
       WORDPRESS_DB_HOST: db:13900
       WORDPRESS_DB_USER: oussama
@@ -44,7 +47,15 @@ services:
       - wpsite
   #CLI    
   cli:
+    depends_on:
+      - db
+      - wordpress
     image: wordpress:cli
+    command: >
+      /bin/sh -c '
+      sleep 10;
+      wp core install --path="/var/www/html" --url="http://localhost:9999" --title="Local Wordpress By Docker" --admin_user=oussama --admin_password=admin --admin_email=oussamabekbich@gmail.com
+      '
     #Theme and plugin mapped localy
     volumes:
       - ./site:/var/www/html/
